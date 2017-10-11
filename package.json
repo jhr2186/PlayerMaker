@@ -1,0 +1,26 @@
+{
+  "name": "playermaker",
+  "version": "1.0.0",
+  "description": "a project for making fantasy sports players",
+  "main": "server.js",
+  "scripts": {
+    "start": "node ./src/server.js",
+    "pretest": "eslint ./src --fix",
+    "test": "echo \"Tests complete\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jhr2186/PlayerMaker.git"
+  },
+  "author": "Jake Recoon",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jhr2186/PlayerMaker/issues"
+  },
+  "homepage": "https://github.com/jhr2186/PlayerMaker#readme",
+  "devDependencies": {
+    "eslint": "^4.8.0",
+    "eslint-config-airbnb": "^16.0.0",
+    "eslint-plugin-import": "^2.7.0"
+  }
+}
