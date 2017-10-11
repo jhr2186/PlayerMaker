@@ -6,7 +6,7 @@ const responseHandler = require('./responses.js');
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
 const handlePost = (request, response, parsedUrl) => {
-  if (parsedUrl.pathname === '/addUser') {
+  if (parsedUrl.pathname === '/addPlayer') {
     const res = response;
 
     const body = [];
@@ -26,7 +26,7 @@ const handlePost = (request, response, parsedUrl) => {
 
       const bodyParams = query.parse(bodyString);
 
-      responseHandler.addUser(request, res, bodyParams);
+      responseHandler.addPlayer(request, res, bodyParams);
     });
   }
 };

@@ -16,11 +16,41 @@
             content.appendChild(p);
         } 
         
+        //check what was requested to be displayed
         if(obj.users){
+          const sport = userForm.querySelector('#sportSelector').value;
+          
+          if(sport === 'ALL'){
             const userList = document.createElement('p');
             const users = JSON.stringify(obj.users);
             userList.textContent = users;
             content.appendChild(userList);
+          } else if(sport === 'NFL'){
+            const userList = document.createElement('p');
+              const users = JSON.stringify(obj.users.usersNFL);
+              userList.textContent = users;
+              content.appendChild(userList);
+          } else if(sport === 'NHL'){
+            const userList = document.createElement('p');
+              const users = JSON.stringify(obj.users.usersNHL);
+              userList.textContent = users;
+              content.appendChild(userList);
+          } else if(sport === 'NBA'){
+            const userList = document.createElement('p');
+              const users = JSON.stringify(obj.users.usersNBA);
+              userList.textContent = users;
+              content.appendChild(userList);
+          } else if(sport === 'MLB'){
+            const userList = document.createElement('p');
+              const users = JSON.stringify(obj.users.usersMLB);
+              userList.textContent = users;
+              content.appendChild(userList);
+          } else if(sport === 'MLS'){
+            const userList = document.createElement('p');
+              const users = JSON.stringify(obj.users.usersMLS);
+              userList.textContent = users;
+              content.appendChild(userList);
+          }
         }
     };
 
@@ -53,12 +83,18 @@
         }
     };
 
-    const sendPost = (e, nameForm) => {
-        const nameAction = nameForm.getAttribute('action');
-        const nameMethod = nameForm.getAttribute('method');
+    const sendPost = (e, playerForm) => {
+        const nameAction = playerForm.getAttribute('action');
+        const nameMethod = playerForm.getAttribute('method');
         
-        const nameField = nameForm.querySelector('#nameField');
-        const ageField = nameForm.querySelector('#ageField');
+        const pName = playerForm.querySelector('#playerName');
+        const pAge = playerForm.querySelector('#playerAge');
+        const pHeight = playerForm.querySelector('#playerHeight');
+        const pWeight = playerForm.querySelector('#playerWeight');
+        const pSpeed = playerForm.querySelector('#playerSpeed');
+        const pStrength = playerForm.querySelector('#playerStrength');
+        const pIQ = playerForm.querySelector('#playerIQ');
+        const pSport = playerForm.querySelector('#playerSport');
         
         const xhr = new XMLHttpRequest();
         
@@ -69,7 +105,7 @@
         
         xhr.onload = () => handleResponse(xhr, true);
         
-        const formData = `name=${nameField.value}&age=${ageField.value}`;
+        const formData = `name=${pName.value}&age=${pAge.value}&height=${pHeight.value}&weight=${pWeight.value}&speed=${pSpeed.value}&strength=${pStrength.value}&iq=${pIQ.value}&sport=${pSport.value}`;
         
         xhr.send(formData);
         
@@ -79,12 +115,11 @@
     };
 
     const sendGet = (e, userForm) => {
-        const userAction = userForm.querySelector('#urlField').value;
         const userMethod = userForm.querySelector('#methodSelect').value;
         
         const xhr = new XMLHttpRequest();
         
-        xhr.open(userMethod, userAction);
+        xhr.open(userMethod, '/getUsers');
         
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.setRequestHeader('Accept', 'application/json');
@@ -94,22 +129,22 @@
         } else {
             xhr.onload = () => handleResponse(xhr, true);
         }
-        
-        e.preventDefault();
-        
+      
         xhr.send();
-        
+      
+        e.preventDefault();
+      
         return false;
     };
 
     const init = () => {
-        const nameForm = document.querySelector('#nameForm');
+        const playerForm = document.querySelector('#playerForm');
         const userForm = document.querySelector('#userForm');
         
-        const addUser = (e) => sendPost(e, nameForm);
+        const addUser = (e) => sendPost(e, playerForm);
         const viewUsers = (e) => sendGet(e, userForm);
         
-        nameForm.addEventListener('submit', addUser);
+        playerForm.addEventListener('submit', addUser);
         userForm.addEventListener('submit', viewUsers);
     };
 
@@ -118,24 +153,47 @@
 </head>
 <body>
   <section id="top">
-    <h3>POST Status Code Tests</h3>
-    <form id="nameForm" action="/addUser" method="post">
-      <label for="name">Name: </label>
-      <input id="nameField" type="text" name="name" />
+    <h3>Create your own sports player!</h3>
+    
+    <form id="playerForm" action="/addPlayer" method="post">
+      <label for="name">Player Name: </label>
+      <input id="playerName" type="text" name="name" />
       <label for="age">Age: </label>
-      <input id="ageField" type="number" name="age" min="0" max="100" step="1"/>
-      <input type="submit" value="Add User" />
+      <input id="playerAge" type="number" name="age" min="0" max="100" step="1"/>
+      <label for="height">Height (inches): </label>
+      <input id="playerHeight" type="number" name="height" min="1" max="120" step=".5"/>
+      <label for="wight">Weight (pounds): </label>
+      <input id="playerWeight" type="number" name="weight" min="100" max="400" step="1"/>
+      <label for="speed">40 yard dash time (seconds): </label>
+      <input id="playerSpeed" type="number" name="speed" min="3" max="100" step=".01"/>
+      <label for="strength">225lbs bench count: </label>
+      <input id="playerStrength" type="number" name="strength" min="1" max="100" step="1"/>
+      <label for="iq">IQ: </label>
+      <input id="playerIQ" type="number" name="iq" min="1" max="155" step="1"/>
+      <label for="sport">Sport: </label>
+      <select id="playerSport" name="sport">
+        <option value="NFL">Football</option>
+        <option value="NBA">Basketball</option>
+        <option value="NHL">Hockey</option>
+        <option value="MLB">Baseball</option>
+        <option value="MLS">Soccer</option>
+      </select>
+      <input type="submit" value="Submit Player" />
     </form>
     <form id="userForm" action="/getUsers" method="get">
-      <select id='urlField'>
-        <option value='/getUsers'>/getUsers</option>
-        <option value='/notReal'>/notReal</option>
+      <select id='sportSelector'>
+        <option value='ALL'>All</option>
+        <option value='NFL'>Football</option>
+        <option value='NHL'>Hockey</option>
+        <option value='NBA'>Basketball</option>
+        <option value='MLB'>Baseball</option>
+        <option value='MLS'>Soccer</option>
       </select>
       <select id="methodSelect">
         <option value="get">GET</option>
         <option value="head">HEAD</option>
       </select>
-      <input type="submit" value="Get User" />
+      <input type="submit" value="Get Players" />
     </form>
   </section>
   <section id="content">
