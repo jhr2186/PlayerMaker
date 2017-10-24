@@ -8,6 +8,41 @@ html, body {
 #top {
   text-align: center;
   margin: 0 auto;
+  margin-bottom: 10px;
+}
+
+#top label{
+  float: left;
+  margin-bottom: 3px;
+  width: 50%
+}
+
+#top input{
+  width: 120px;
+  margin-bottom: 3px;
+}
+
+#submit{
+  text-align: center;
+  margin: auto;
+  margin-top: 3px;
+  margin-bottom: 3px;
+}
+
+#playerTable{
+  border: 1px solid black;
+  margin: auto;
+}
+
+th{
+  border: 1px solid black;
+  margin-left: 1px;
+  margin-right: 1px;
+  font-size: 20px;
+}
+
+td{
+  border: 1px solid black;
 }
 
 #top h1 {
@@ -18,4 +53,5 @@ html, body {
   margin-top: 100px;
   font-size: 2em;
   text-align: center;
+  width: 100%;
 }

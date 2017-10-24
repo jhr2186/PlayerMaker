@@ -6,9 +6,68 @@
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
   <script type="text/babel">
-    const parseJSON = (xhr, content) => {
+    const createData = (users, sport, table, first) => {
+      //erase the table if this is the first time through
+      if(first){
+        var mytbl = document.getElementById("playerTable");
+            mytbl.getElementsByTagName("tbody")[0].innerHTML = mytbl.rows[0].innerHTML;
+      }
+      
+      //technically this is recusion I guess
+      if(sport === "ALL"){
+        createData(users.usersNFL, "Football", table, false);
+        createData(users.usersNHL, "Hockey", table, false);
+        createData(users.usersNBA, "Basketball", table, false);
+        createData(users.usersMLB, "Baseball", table, false);
+        createData(users.usersMLS, "Soccer", table, false);
+      } else{
+        for(var player in users){            
+          var tr = document.createElement('tr');
+          var td1 = document.createElement('td');
+          var txt1 = document.createTextNode(`${users[player].name}`);
+          var td2 = document.createElement('td');
+          var txt2 = document.createTextNode(`${users[player].age}`);
+          var td3 = document.createElement('td');
+          var txt3 = document.createTextNode(`${users[player].height}`);
+          var td4 = document.createElement('td');
+          var txt4 = document.createTextNode(`${users[player].weight}`);
+          var td5 = document.createElement('td');
+          var txt5 = document.createTextNode(`${users[player].speed}`);
+          var td6 = document.createElement('td');
+          var txt6 = document.createTextNode(`${users[player].strength}`);
+          var td7 = document.createElement('td');
+          var txt7 = document.createTextNode(`${users[player].iq}`);
+          var td8 = document.createElement('td');
+          var txt8 = document.createTextNode(`${sport}`);
+
+          td1.appendChild(txt1);
+          td2.appendChild(txt2);
+          td3.appendChild(txt3);
+          td4.appendChild(txt4);
+          td5.appendChild(txt5);
+          td6.appendChild(txt6);
+          td7.appendChild(txt7);
+          td8.appendChild(txt8);
+
+          tr.appendChild(td1);
+          tr.appendChild(td2);
+          tr.appendChild(td3);
+          tr.appendChild(td4);
+          tr.appendChild(td5);
+          tr.appendChild(td6);
+          tr.appendChild(td7);
+          tr.appendChild(td8);
+
+          document.querySelector('tbody').appendChild(tr);
+        }
+      }
+    };
+    
+    const parseJSON = (xhr, table) => {
+        const content = document.querySelector('#content');
+      
         const obj = JSON.parse(xhr.response);
-        console.dir(obj);
+        //console.dir(obj);
         
         if(obj.message) {
             const p = document.createElement('p');
@@ -19,43 +78,30 @@
         //check what was requested to be displayed
         if(obj.users){
           const sport = userForm.querySelector('#sportSelector').value;
+          const users = obj.users;
           
+          console.dir(obj);
+          
+          //stringify the object and
           if(sport === 'ALL'){
-            const userList = document.createElement('p');
-            const users = JSON.stringify(obj.users);
-            userList.textContent = users;
-            content.appendChild(userList);
+            createData(users, "ALL", table, true);
           } else if(sport === 'NFL'){
-            const userList = document.createElement('p');
-              const users = JSON.stringify(obj.users.usersNFL);
-              userList.textContent = users;
-              content.appendChild(userList);
+            createData(users.usersNFL, "Football", table, true);
           } else if(sport === 'NHL'){
-            const userList = document.createElement('p');
-              const users = JSON.stringify(obj.users.usersNHL);
-              userList.textContent = users;
-              content.appendChild(userList);
+            createData(users.usersNHL, "Hockey", table, true);
           } else if(sport === 'NBA'){
-            const userList = document.createElement('p');
-              const users = JSON.stringify(obj.users.usersNBA);
-              userList.textContent = users;
-              content.appendChild(userList);
+            createData(users.usersNBA, "Basketball", table, true);
           } else if(sport === 'MLB'){
-            const userList = document.createElement('p');
-              const users = JSON.stringify(obj.users.usersMLB);
-              userList.textContent = users;
-              content.appendChild(userList);
+            createData(users.usersMLB, "Baseball", table, true);
           } else if(sport === 'MLS'){
-            const userList = document.createElement('p');
-              const users = JSON.stringify(obj.users.usersMLS);
-              userList.textContent = users;
-              content.appendChild(userList);
+            createData(users.usersMLS, "Soccer", table, true);
           }
         }
     };
 
     const handleResponse = (xhr, parseResponse) => {
         const content = document.querySelector('#content');
+        const table = document.querySelector('#playerTable');
         
         switch(xhr.status){
             case 200:
@@ -79,7 +125,7 @@
         }
         
         if(parseResponse){
-            parseJSON(xhr, content);
+            parseJSON(xhr, table);
         }
     };
 
@@ -153,23 +199,30 @@
 </head>
 <body>
   <section id="top">
-    <h3>Create your own sports player!</h3>
+    <h2>Create your own sports player!</h2>
     
     <form id="playerForm" action="/addPlayer" method="post">
       <label for="name">Player Name: </label>
       <input id="playerName" type="text" name="name" />
+      <br/>
       <label for="age">Age: </label>
       <input id="playerAge" type="number" name="age" min="0" max="100" step="1"/>
+      <br/>
       <label for="height">Height (inches): </label>
-      <input id="playerHeight" type="number" name="height" min="1" max="120" step=".5"/>
+      <input id="playerHeight" type="number" name="height" min="48" max="120" step=".5"/>
+      <br/>
       <label for="wight">Weight (pounds): </label>
       <input id="playerWeight" type="number" name="weight" min="100" max="400" step="1"/>
+      <br/>
       <label for="speed">40 yard dash time (seconds): </label>
-      <input id="playerSpeed" type="number" name="speed" min="3" max="100" step=".01"/>
+      <input id="playerSpeed" type="number" name="speed" min="3" max="10" step=".01"/>
+      <br/>
       <label for="strength">225lbs bench count: </label>
-      <input id="playerStrength" type="number" name="strength" min="1" max="100" step="1"/>
+      <input id="playerStrength" type="number" name="strength" min="1" max="50" step="1"/>
+      <br/>
       <label for="iq">IQ: </label>
       <input id="playerIQ" type="number" name="iq" min="1" max="155" step="1"/>
+      <br/>
       <label for="sport">Sport: </label>
       <select id="playerSport" name="sport">
         <option value="NFL">Football</option>
@@ -178,7 +231,8 @@
         <option value="MLB">Baseball</option>
         <option value="MLS">Soccer</option>
       </select>
-      <input type="submit" value="Submit Player" />
+      <br/>
+      <input id="submit" type="submit" value="Submit Player" />
     </form>
     <form id="userForm" action="/getUsers" method="get">
       <select id='sportSelector'>
@@ -196,6 +250,18 @@
       <input type="submit" value="Get Players" />
     </form>
   </section>
+  <table id="playerTable">
+      <tr id="baseTR">
+        <th>Player Name</th>
+        <th>Age</th>
+        <th>Height (in)</th>
+        <th>Weight (lbs)</th>
+        <th>Agility</th>
+        <th>Fitness</th>
+        <th>Intelligence</th>
+        <th>Sport</th>
+      </tr>
+    </table>
   <section id="content">
   </section>
 </body>

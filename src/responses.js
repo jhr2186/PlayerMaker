@@ -58,9 +58,17 @@ const addNFLPlayer = (body) => {
   usersNFL[body.name].age = body.age;
   usersNFL[body.name].height = body.height;
   usersNFL[body.name].weight = body.weight;
-  usersNFL[body.name].speed = body.speed;
-  usersNFL[body.name].strength = body.strength;
-  usersNFL[body.name].iq = body.iq;
+  usersNFL[body.name].speed =
+    Math.max(0, Math.min(
+      100,
+      Math.ceil(((10 / body.speed) * 25) + (75 - body.height) + ((240 - body.weight) / 4)),
+    ));
+  usersNFL[body.name].strength =
+    Math.max(0, Math.min(
+      100,
+      Math.ceil((body.strength * 10) - (78 - body.height) - ((250 - body.weight) / 3)),
+    ));
+  usersNFL[body.name].iq = Math.ceil(body.iq / 1.55);
 };
 
 const addNHLPlayer = (body) => {
@@ -68,9 +76,17 @@ const addNHLPlayer = (body) => {
   usersNHL[body.name].age = body.age;
   usersNHL[body.name].height = body.height;
   usersNHL[body.name].weight = body.weight;
-  usersNHL[body.name].speed = body.speed;
-  usersNHL[body.name].strength = body.strength;
-  usersNHL[body.name].iq = body.iq;
+  usersNHL[body.name].speed =
+    Math.max(0, Math.min(
+      100,
+      Math.ceil(((10 / body.speed) * 25) + (74 - body.height) + ((200 - body.weight) / 4)),
+    ));
+  usersNHL[body.name].strength =
+    Math.max(0, Math.min(
+      100,
+      Math.ceil((body.strength * 10) - (76 - body.height) - ((230 - body.weight) / 3)),
+    ));
+  usersNHL[body.name].iq = Math.ceil(body.iq / 1.55);
 };
 
 const addNBAPlayer = (body) => {
@@ -78,9 +94,17 @@ const addNBAPlayer = (body) => {
   usersNBA[body.name].age = body.age;
   usersNBA[body.name].height = body.height;
   usersNBA[body.name].weight = body.weight;
-  usersNBA[body.name].speed = body.speed;
-  usersNBA[body.name].strength = body.strength;
-  usersNBA[body.name].iq = body.iq;
+  usersNBA[body.name].speed =
+    Math.max(0, Math.min(
+      100,
+      Math.ceil(((10 / body.speed) * 25) + (80 - body.height) + ((220 - body.weight) / 4)),
+    ));
+  usersNBA[body.name].strength =
+    Math.max(0, Math.min(
+      100,
+      Math.ceil((body.strength * 10) - (80 - body.height) - ((240 - body.weight) / 3)),
+    ));
+  usersNBA[body.name].iq = Math.ceil(body.iq / 1.55);
 };
 
 const addMLBPlayer = (body) => {
@@ -88,9 +112,17 @@ const addMLBPlayer = (body) => {
   usersMLB[body.name].age = body.age;
   usersMLB[body.name].height = body.height;
   usersMLB[body.name].weight = body.weight;
-  usersMLB[body.name].speed = body.speed;
-  usersMLB[body.name].strength = body.strength;
-  usersMLB[body.name].iq = body.iq;
+  usersMLB[body.name].speed =
+    Math.max(0, Math.min(
+      100,
+      Math.ceil(((10 / body.speed) * 25) + (73 - body.height) + ((180 - body.weight) / 4)),
+    ));
+  usersMLB[body.name].strength =
+    Math.max(0, Math.min(
+      100,
+      Math.ceil((body.strength * 10) - (78 - body.height) - ((240 - body.weight) / 3)),
+    ));
+  usersMLB[body.name].iq = Math.ceil(body.iq / 1.55);
 };
 
 const addMLSPlayer = (body) => {
@@ -98,9 +130,17 @@ const addMLSPlayer = (body) => {
   usersMLS[body.name].age = body.age;
   usersMLS[body.name].height = body.height;
   usersMLS[body.name].weight = body.weight;
-  usersMLS[body.name].speed = body.speed;
-  usersMLS[body.name].strength = body.strength;
-  usersMLS[body.name].iq = body.iq;
+  usersMLS[body.name].speed =
+    Math.max(0, Math.min(
+      100,
+      Math.ceil(((10 / body.speed) * 25) + (70 - body.height) + ((170 - body.weight) / 4)),
+    ));
+  usersMLS[body.name].strength =
+    Math.max(0, Math.min(
+      100,
+      Math.ceil((body.strength * 10) - (73 - body.height) - ((210 - body.weight) / 3)),
+    ));
+  usersMLS[body.name].iq = Math.ceil(body.iq / 1.55);
 };
 
 const addPlayer = (request, response, body) => {
